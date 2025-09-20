@@ -9,8 +9,12 @@ import { WeatherData } from '../weather-data';
   styleUrl: './weather.scss'
 })
 export class Weather {
+[x: string]: any;
+  forecasts: WeatherData[] = [];
+
   constructor(http: HttpClient) {
     http.get<WeatherData[]>('http://localhost:5156/weatherforecast').subscribe(result => {
+      this.forecasts = result;
     });
   }
 }
