@@ -1,11 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
+import { AuthService } from './auth-service';
+import { LoginRequest } from './login-request';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
-export class Login {
+export class Login implements OnInit {
+  form!: UntypedFormGroup;
+
+  constructor(private authService: AuthService) {
+
+  }
+
+  ngOnInit(): void {
+    this.form = new UntypedFormGroup({
+      userName: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required)
+    });
+  }
+
+  onSubmit(): void {
+    let loginRequest = <LoginRequest> {
+      userName: this.form.controls["userName"].value,
+      password: this.form.controls["password"].value
+    };
+    this.authService.login(loginRequest).subscribe({
+      next: result => {
+        console.log(result);
+      }, 
+      error: result => {
+        console.log("Error" + result);
+      }
+    })
+
+  }
 
 }
+
+

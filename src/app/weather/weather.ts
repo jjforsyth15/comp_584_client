@@ -20,6 +20,6 @@ export class Weather {
 
   constructor(http: HttpClient) {
     this.forecasts$ = http.get<WeatherData[]>
-    ('https://localhost:7242/api/WeatherForecast');
+    ('http://localhost:5156/WeatherForecast');
   }
 }
